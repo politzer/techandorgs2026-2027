@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technology and Organizations: Foundations &amp; Frontiers — 2026–2027</title>
+<style>
+  :root{
+    --ink:#161513;
+    --body:#3a3630;      /* explanatory prose — one value, was two */
+    --muted:#6b6660;
+    --faint:#6f6a63;     /* was #97918a (2.99:1); now ~4.7:1 on paper */
+    --rule:#e2ddd5;
+    --paper:#fbfaf7;
+    --card:#ffffff;
+    --accent:#8c1515;
+    --accent-soft:#f3ece7;
+    --max:1080px;
+    --measure:46rem;   /* lede only — prose runs the full card by choice */
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+
+  /* ---- nav ----
+     The links used to disappear entirely below 1000px, which left every phone
+     and tablet with a 4,900px page and no way to jump. Now the wordmark
+     shortens at that breakpoint and the links stay, in a scrollable strip. */
+  nav{position:sticky;top:0;z-index:20;background:rgba(251,250,247,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;min-height:56px;gap:16px;padding-top:8px;padding-bottom:8px}
+  .brand{font-weight:700;letter-spacing:-.01em;white-space:nowrap;flex:0 0 auto}
+  .brand .amp{color:var(--accent)}
+  .brand .short{display:none}
+  .navlinks{display:flex;gap:24px;font-size:14px}
+  .navlinks a{color:var(--muted);white-space:nowrap}
+  .navlinks a:hover{color:var(--ink);text-decoration:none}
+  @media(max-width:1000px){
+    .brand .full{display:none}
+    .brand .short{display:inline}
+    .navlinks{
+      gap:20px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
+      margin:0 -28px 0 0;padding:0 28px 0 0;-webkit-overflow-scrolling:touch;
+    }
+    .navlinks::-webkit-scrollbar{display:none}
+  }
+  @media(max-width:470px){.navlinks{gap:16px;font-size:13px}}
+
+  /* ---- hero ---- */
+  header{padding:76px 0 56px;border-bottom:1px solid var(--rule)}
+  header .wrap{container-type:inline-size}
+  /* same treatment as the h2 section labels — it is the same kind of element */
+  .eyebrow{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:16px}
+  h1{
+    font-size:clamp(32px,5.2vw,56px);
+    line-height:1.06;letter-spacing:-.03em;margin:0 0 20px;font-weight:700;
+    text-wrap:balance;
+  }
+  @supports (container-type:inline-size){
+    h1{
+      /* Fills the measure on one line when the font's metrics match: this string
+         is ~18.8x its own font-size wide in Helvetica/Arial, so container/19
+         lands a hair short of flush.
+
+         NOTE: -apple-system resolves to SF Pro on macOS, Segoe UI on Windows,
+         Roboto on Android and Liberation Sans on Linux, and those ratios differ
+         (measured 16.5-22.2 across faces). So this is a best-effort fill, not a
+         guarantee: no white-space:nowrap, and the size is capped. On a wider
+         face the headline simply wraps to two lines instead of overflowing the
+         page horizontally, which is what nowrap used to do.
+         Re-measure the 19 if the headline text or the typeface changes. */
+      font-size:min(calc(100cqi / 19), 56px);
+    }
+    /* Below this, one line is not worth the size it costs. The clamp is tuned
+       so the two branches MEET at 700px (~34px on both sides) instead of the
+       headline jumping from 34px up to 42px as the window narrows. */
+    @media(max-width:700px){
+      h1{font-size:clamp(30px,4.85vw,34px)}
+    }
+  }
+  .lede{font-size:clamp(17px,1.65vw,21px);line-height:1.5;color:var(--muted);max-width:var(--measure);margin:0}
+  @supports (container-type:inline-size){
+    /* Fills the same width as the headline. Same caveat as above, so no
+       text-wrap:nowrap either — on a wider face it wraps rather than overflows.
+       No text-wrap:balance: balance would split this into two equal halves and
+       wrap at the "long-form" hyphen however wide the window is. */
+    .lede{font-size:min(calc(100cqi / 53.5), 21px);max-width:none}
+    /* Continuous with the branch above at 1000px (~17.7px on both sides). */
+    @media(max-width:1000px){
+      .lede{font-size:clamp(17px,1.87cqi,18px);max-width:min(var(--measure),80cqi)}
+    }
+  }
+  .meta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+  .chip{background:var(--accent-soft);color:var(--accent);border-radius:100px;padding:8px 16px;font-size:14px;font-weight:500}
+  /* stacked rather than orphaned: at narrow widths these used to wrap 1-then-2,
+     so the lone first chip read as a heading */
+  @media(max-width:620px){.meta-row{flex-direction:column;align-items:flex-start;gap:8px}}
+  .byline{margin:24px 0 0;color:var(--faint);font-size:14px}
+
+  /* ---- sections ---- */
+  section{padding:64px 0;border-bottom:1px solid var(--rule);scroll-margin-top:80px}
+  h2{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:0 0 28px;font-weight:600}
+  h3{font-size:26px;letter-spacing:-.015em;margin:0 0 8px;font-weight:700}
+
+  /* ---- schedule table ---- */
+  table{width:100%;border-collapse:collapse;font-size:15px;table-layout:fixed}
+  th{text-align:left;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600;padding:0 12px 8px 0;border-bottom:1px solid var(--rule)}
+  td{padding:16px 12px 16px 0;border-bottom:1px solid var(--rule);vertical-align:middle;text-align:left}
+  /* Each column is sized to its longest entry plus a gutter of the same order
+     (badge 76 -> 130, longest date 125 -> 200, longest reading 333 -> ~38%),
+     so Guest sits just past Reading instead of being pushed to the far edge.
+     Guest takes the remainder, which is why it carries no width of its own. */
+  col.session{width:130px}
+  col.date{width:200px}
+  col.reading{width:38%}
+  td.guest{color:var(--body)}
+  @media(max-width:900px){
+    col.date{width:160px}
+    col.reading{width:36%}
+  }
+  td.date{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:600}
+  .kind{display:inline-block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;padding:4px 8px;border-radius:4px;transition:opacity .15s}
+  .kind.b{background:#2f2b26;color:#fff}
+  .kind.p{background:var(--accent-soft);color:var(--accent)}
+  a.kind:hover{opacity:.75;text-decoration:none}
+  /* Below 680 the fixed columns left the Reading cell — the actual content —
+     106px at 390px wide, and overflowed the viewport entirely at 320px.
+     Each row becomes a block: badge + date on one line, reading beneath. */
+  @media(max-width:680px){
+    table,tbody,tr,td{display:block;width:auto}
+    thead,colgroup{display:none}
+    table{font-size:15px}
+    tr{
+      display:grid;grid-template-columns:auto 1fr;align-items:center;
+      gap:4px 12px;padding:16px 0;border-bottom:1px solid var(--rule);
+    }
+    td{border:0;padding:0}
+    td:nth-child(1){grid-column:1;grid-row:1}
+    td.date{grid-column:2;grid-row:1}
+    td:nth-child(3){grid-column:1 / -1;grid-row:2;color:var(--body)}
+    /* the header row is hidden on mobile, so the guest cell labels itself —
+       and collapses entirely on the rows that have no guest */
+    td.guest{grid-column:1 / -1;grid-row:3;font-size:14px;color:var(--muted)}
+    td.guest:empty{display:none}
+    td.guest::before{content:"Guest: ";color:var(--faint)}
+  }
+
+  /* ---- about ---- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:680px){.grid2{grid-template-columns:1fr}}
+  .box{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:24px}
+  .box h4{margin:0 0 12px;font-size:16px}
+  /* one prose treatment — .box p and .theme used to be 14.5px #2f2b26 and
+     15px #6b6660 for the same job. Line length left as-is, by choice. */
+  .box p{font-size:15px;color:var(--body);margin:0}
+  .box p + p{margin-top:12px}
+
+  /* ---- session cards ---- */
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:32px;margin-bottom:24px}
+  .card .tag{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:8px}
+  h3 a{color:inherit;border-bottom:1px solid rgba(140,21,21,.35)}
+  h3 a:hover{color:var(--accent);border-bottom-color:var(--accent);text-decoration:none}
+  .theme{color:var(--body);font-size:15px;margin:16px 0 0}
+  .author{color:var(--faint);font-size:14px;margin:8px 0 0}
+  .author a{color:var(--muted)}
+
+  .grouphd{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600;margin:24px 0 16px;padding-top:20px;border-top:1px solid var(--rule)}
+  ol.papers{list-style:none;counter-reset:p;margin:0;padding:0}
+  ol.papers li{counter-increment:p;position:relative;padding:0 0 16px 40px;font-size:15px}
+  ol.papers li:last-child{padding-bottom:0}
+  ol.papers li::before{content:counter(p);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:#2f2b26;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .type{display:inline-block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;padding:3px 8px;border-radius:4px;margin-right:8px;position:relative;top:-1px}
+  .box .type{margin-right:0}
+  .box .type.tight{padding-right:3px}
+  .type.e{background:#e7efe9;color:#2e6b47}
+  .type.t{background:#eeeaf3;color:#5b4a78}
+  .nb{white-space:nowrap}
+  /* the citation used to be one 128-character bold accent link. Authors carry
+     the ink colour, the title carries the link, so the eye lands on the title. */
+  .cite{font-weight:600;color:var(--ink)}
+  .ptitle{font-weight:600}
+  .venue{font-style:italic;color:var(--muted)}
+
+  footer{padding:48px 0 64px;color:var(--faint);font-size:14px}
+  footer .wrap{max-width:var(--max)}
+  footer p{margin:0}
+  footer a{color:var(--muted)}
+  footer a.mail{color:inherit;text-decoration:underline;text-decoration-thickness:.5px;text-underline-offset:2.5px;text-decoration-color:rgba(47,43,38,.28)}
+  footer a.mail:hover{color:var(--accent);text-decoration-thickness:.5px;text-decoration-color:var(--accent)}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <div class="brand">
+    <span class="full">Technology and Organizations: Foundations <span class="amp">&amp;</span> Frontiers</span>
+    <span class="short">Tech <span class="amp">&amp;</span> Orgs</span>
+  </div>
+  <div class="navlinks">
+    <a href="#schedule">Schedule</a>
+    <a href="#about">About</a>
+    <a href="#s1">Session 1</a>
+    <a href="#s2">Session 2</a>
+    <a href="#s3">Session 3</a>
+    <a href="#s4">Session 4</a>
+  </div>
+</div></nav>
+
+<header><div class="wrap">
+  <div class="eyebrow">Academic Year 2026 – 2027</div>
+  <h1>Four books on technology and organizing</h1>
+  <p class="lede">A year-long reading group that matches foundational <span class="nb">long-form</span> works about technology to modern management papers.</p>
+  <div class="meta-row">
+    <span class="chip">Wednesdays · 8:00–9:30am PT</span>
+    <span class="chip">11am ET · 4pm UK · 5pm CET</span>
+    <span class="chip">8 sessions</span>
+  </div>
+  <p class="byline">Organized by Daniel J. Politzer and Amanda L. Pratt, Stanford University</p>
+</div></header>
+
+<section id="schedule"><div class="wrap">
+  <h2>Schedule</h2>
+  <table>
+    <colgroup><col class="session"><col class="date"><col class="reading"><col class="guest"></colgroup>
+    <thead><tr><th>Session</th><th>Date</th><th>Reading</th><th>Guest</th></tr></thead>
+    <tbody>
+      <tr><td><a class="kind b" href="#s1">Book 1</a></td><td class="date">Wed Oct 14, 2026</td><td>Yates, <em>Control through Communication</em></td><td class="guest">JoAnne Yates</td></tr>
+      <tr><td><a class="kind p" href="#s1">Papers 1</a></td><td class="date">Wed Nov 4, 2026</td><td>Genres, records, data infrastructure</td><td class="guest"></td></tr>
+
+      <tr><td><a class="kind b" href="#s2">Book 2</a></td><td class="date">Wed Jan 13, 2027</td><td>Zuboff, <em>In the Age of the Smart Machine</em></td><td class="guest"></td></tr>
+      <tr><td><a class="kind p" href="#s2">Papers 2</a></td><td class="date">Wed Feb 3, 2027</td><td>Automate / informate, skill &amp; authority</td><td class="guest"></td></tr>
+
+      <tr><td><a class="kind b" href="#s3">Book 3</a></td><td class="date">Wed Apr 7, 2027</td><td>Suchman, <em>Human–Machine Reconfigurations</em></td><td class="guest"></td></tr>
+      <tr><td><a class="kind p" href="#s3">Papers 3</a></td><td class="date">Wed Apr 21, 2027</td><td>Situated action &amp; invisible work</td><td class="guest"></td></tr>
+
+      <tr><td><a class="kind b" href="#s4">Book 4</a></td><td class="date">Wed Jun 30, 2027</td><td>Orr, <em>Talking about Machines</em></td><td class="guest"></td></tr>
+      <tr><td><a class="kind p" href="#s4">Papers 4</a></td><td class="date">Wed Jul 21, 2027</td><td>Communities of practice, narrative &amp; the algorithm</td><td class="guest"></td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<section id="about"><div class="wrap">
+  <h2>About</h2>
+  <div class="box">
+    <h4>Why are we here?</h4>
+    <p>These four books represent foundational books in the field of work and technology studies. Each of these books leverages qualitative methods to surface fundamental concepts which have gone on to influence the field of management and in particular theories around technology.</p>
+    <p>Our purpose in selecting these four books and accompanying papers was to provide an opportunity for scholars to be exposed to foundational texts around technology in their entirety or revisit these texts in the context of AI. By pairing these books with more current papers, we hope to foster a discussion that connects these books to current phenomena, providing modern context while reinforcing theoretical foundations.</p>
+    <p>This effort builds on the intellectual community around technology and long form scholarship started by <a href="https://sites.google.com/essec.edu/history-of-tech-worktechorg/home?authuser=0" target="_blank" rel="noopener">Ruthanne Huising and Virginia Leavell</a> in the 2025-2026 academic year with the History of Technology reading group. We look forward to exploring these books and papers together, as we continue this tradition.</p>
+  </div>
+  <div class="grid2" style="margin-top:24px">
+    <div class="box">
+      <h4>How it works</h4>
+      <p>Eight sessions, ninety minutes each, in four pairs. The first session of a pair focuses on the book. Three weeks later the second session focuses on three related papers, thirty minutes each. All meetings will be on Zoom.</p>
+      <p>Readings that come up in discussion are added here afterwards.</p>
+    </div>
+    <div class="box">
+      <h4>Reading the list</h4>
+      <p>Each paper is marked <span class="type e">Empirical</span> or <span class="type t tight">Theoretical</span>. Titles link to the publisher's page and its abstract.</p>
+      <p>Everything on this page is in a <a href="https://www.zotero.org/groups/6633531/tech_and_orgs_-_foundations__frontiers_2026-2027" target="_blank" rel="noopener">Zotero group library</a>, foldered by session. Anyone can browse it, and joining the group syncs it into your own Zotero. If you have trouble accessing a paper, email <a href="mailto:daniel.politzer@stanford.edu">Daniel</a> or <a href="mailto:amanda.pratt@stanford.edu">Amanda</a>.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="s1"><div class="wrap">
+  <h2>Session 1 · Oct 14 &amp; Nov 4, 2026</h2>
+  <div class="card">
+    <div class="tag">Book 1</div>
+    <h3>JoAnne Yates — <a href="https://press.jhu.edu/books/title/1373/control-through-communication" target="_blank" rel="noopener"><em>Control through Communication</em></a> (1989)</h3>
+    <p class="author">Sloan Distinguished Professor of Management, Emerita, MIT Sloan · <a href="https://scholar.google.com/citations?user=Sph4FMMAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a> · <a href="https://mitsloan.mit.edu/faculty/directory/joanne-yates" target="_blank" rel="noopener">MIT Sloan profile</a></p>
+    <p class="theme"><strong>Theme:</strong> How communication technology affected, and was affected by, record keeping and thus management practice. Based on historical archival data, this work lays the foundation for understanding how systems of producing, transmitting, and storing business information affects organizing and organizational structures.</p>
+
+    <div class="grouphd">Readings</div>
+    <ol class="papers">
+      <li><span class="type e">Empirical</span><span class="cite">Orlikowski, W. J. &amp; Yates, J. (1994).</span> <a class="ptitle" href="https://doi.org/10.2307/2393771" target="_blank" rel="noopener">Genre Repertoire: The Structuring of Communicative Practices in Organizations.</a> <span class="venue">Administrative Science Quarterly, 39(4), 541–574.</span></li>
+      <li><span class="type e">Empirical</span><span class="cite">Bailey, D. E., Leonardi, P. M. &amp; Barley, S. R. (2012).</span> <a class="ptitle" href="https://doi.org/10.1287/orsc.1110.0703" target="_blank" rel="noopener">The Lure of the Virtual.</a> <span class="venue">Organization Science, 23(5), 1485–1504.</span></li>
+      <li><span class="type t">Theoretical</span><span class="cite">Alaimo, C. &amp; Kallinikos, J. (2022).</span> <a class="ptitle" href="https://doi.org/10.1287/orsc.2021.1552" target="_blank" rel="noopener">Organizations Decentered: Data Objects, Technology and Knowledge.</a> <span class="venue">Organization Science, 33(1), 19–37.</span></li>
+    </ol>
+  </div>
+</div></section>
+<section id="s2"><div class="wrap">
+  <h2>Session 2 · Jan 13 &amp; Feb 3, 2027</h2>
+  <div class="card">
+    <div class="tag">Book 2</div>
+    <h3>Shoshana Zuboff — <a href="https://www.hachettebookgroup.com/titles/shoshana-zuboff/in-the-age-of-the-smart-machine/9780465032112/?lens=basic-books" target="_blank" rel="noopener"><em>In the Age of the Smart Machine</em></a> (1988)</h3>
+    <p class="author">Charles Edward Wilson Professor Emerita, Harvard Business School · <a href="https://www.semanticscholar.org/author/Shoshana-Zuboff/2684210" target="_blank" rel="noopener">Semantic Scholar</a> · <a href="https://www.hbs.edu/faculty/Pages/profile.aspx?facId=6582" target="_blank" rel="noopener">HBS profile</a></p>
+    <p class="theme"><strong>Theme:</strong> A technology can automate work (do what people used to do), or it can informate it, turning the work into a stream of readable data. Zuboff's fieldwork in mills, offices and plants shows organizations reaching for the first and getting the second, and then having to decide who is allowed to read what, and who counts as skilled once the job is legible on a screen.</p>
+
+    <div class="grouphd">Readings</div>
+    <ol class="papers">
+      <li><span class="type e">Empirical</span><span class="cite">Anthony, C. (2021).</span> <a class="ptitle" href="https://doi.org/10.1177/00018392211016755" target="_blank" rel="noopener">When Knowledge Work and Analytical Technologies Collide: The Practices and Consequences of Black Boxing Algorithmic Technologies.</a> <span class="venue">Administrative Science Quarterly, 66(4), 1173–1212.</span></li>
+      <li><span class="type e">Empirical</span><span class="cite">Pachidi, S., Berends, H., Faraj, S. &amp; Huysman, M. (2021).</span> <a class="ptitle" href="https://doi.org/10.1287/orsc.2020.1377" target="_blank" rel="noopener">Make Way for the Algorithms: Symbolic Actions and Change in a Regime of Knowing.</a> <span class="venue">Organization Science, 32(1), 18–41.</span></li>
+      <li><span class="type t">Theoretical</span><span class="cite">Kellogg, K. C., Valentine, M. A. &amp; Christin, A. (2020).</span> <a class="ptitle" href="https://doi.org/10.5465/annals.2018.0174" target="_blank" rel="noopener">Algorithms at Work: The New Contested Terrain of Control.</a> <span class="venue">Academy of Management Annals, 14(1), 366–410.</span></li>
+    </ol>
+  </div>
+</div></section>
+<section id="s3"><div class="wrap">
+  <h2>Session 3 · Apr 7 &amp; Apr 21, 2027</h2>
+  <div class="card">
+    <div class="tag">Book 3</div>
+    <h3>Lucy Suchman — <a href="https://www.cambridge.org/core/books/humanmachine-reconfigurations/9D53E602BA9BB5209271460F92D00EFE" target="_blank" rel="noopener"><em>Human–Machine Reconfigurations</em></a> (2007)</h3>
+    <p class="author">Professor Emerita of the Anthropology of Science and Technology, Lancaster University · <a href="https://scholar.google.com/citations?user=ASV8erkAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a> · <a href="https://www.lancaster.ac.uk/people-profiles/Lucy-Suchman" target="_blank" rel="noopener">Lancaster profile</a></p>
+    <p class="theme"><strong>Theme:</strong> Situated action. Anyone who has used a piece of digital technology has encountered a situation where their intent seems to be at odds with the technology's design. Suchman explores how the limitations of a machine's contextual knowledge challenges human-machine communication and the ability for people to achieve their intended action. Specifically, she shows how plans are resources people use to act, not scripts that determine what they do, by exploring machines built on the opposite assumption.</p>
+    <p class="theme">(Note: Please read the 2007 edition rather than the original <em>Plans and Situated Actions</em> so that we can all discuss the additional chapters.)</p>
+
+    <div class="grouphd">Readings</div>
+    <ol class="papers">
+      <li><span class="type e">Empirical</span><span class="cite">Barrett, M., Oborn, E. &amp; Orlikowski, W. J. (2012).</span> <a class="ptitle" href="https://doi.org/10.1287/orsc.1100.0639" target="_blank" rel="noopener">Reconfiguring Boundary Relations: Robotic Innovations in Pharmacy Work.</a> <span class="venue">Organization Science, 23(5), 1448–1466.</span></li>
+      <li><span class="type e">Empirical</span><span class="cite">Kim, B., Rezazade Mehrizi, M. H. &amp; Bailey, D. E. (2025).</span> <a class="ptitle" href="https://doi.org/10.5465/amj.2023.1286" target="_blank" rel="noopener">Interlacing Situated and Algorithmic Modes of Knowledge Work: A Workplace Jurisdiction Perspective.</a> <span class="venue">Academy of Management Journal, 68(5), 907–938.</span></li>
+      <li><span class="type t">Theoretical</span><span class="cite">Anthony, C., Bechky, B. A. &amp; Fayard, A.-L. (2023).</span> <a class="ptitle" href="https://doi.org/10.1287/orsc.2022.1651" target="_blank" rel="noopener">"Collaborating" with AI: Taking a System View to Explore the Future of Work.</a> <span class="venue">Organization Science, 34(5), 1672–1694.</span></li>
+    </ol>
+  </div>
+</div></section>
+<section id="s4"><div class="wrap">
+  <h2>Session 4 · Jun 30 &amp; Jul 21, 2027</h2>
+  <div class="card">
+    <div class="tag">Book 4</div>
+    <h3>Julian E. Orr — <a href="https://www.cornellpress.cornell.edu/book/9780801483905/talking-about-machines/" target="_blank" rel="noopener"><em>Talking about Machines: An Ethnography of a Modern Job</em></a> (1996)</h3>
+    <p class="author">Formerly Xerox PARC · <a href="https://www.semanticscholar.org/author/J.-Orr/48998107" target="_blank" rel="noopener">Semantic Scholar</a></p>
+    <p class="theme"><strong>Theme:</strong> Communities of practice. Xerox copier technicians diagnose problems their manuals cannot describe, and they do it by telling each other stories over breakfast, in the field, and in front of the customer. The knowledge lives in an occupational community rather than a repository, and so do the identity and the memory that come with it.</p>
+
+    <div class="grouphd">Readings</div>
+    <ol class="papers">
+      <li><span class="type e">Empirical</span><span class="cite">Bechky, B. A. (2003).</span> <a class="ptitle" href="https://doi.org/10.1287/orsc.14.3.312.15162" target="_blank" rel="noopener">Sharing Meaning Across Occupational Communities: The Transformation of Understanding on a Production Floor.</a> <span class="venue">Organization Science, 14(3), 312–330.</span></li>
+      <li><span class="type t">Theoretical</span><span class="cite">Brown, J. S. &amp; Duguid, P. (1991).</span> <a class="ptitle" href="https://doi.org/10.1287/orsc.2.1.40" target="_blank" rel="noopener">Organizational Learning and Communities-of-Practice: Toward a Unified View of Working, Learning, and Innovation.</a> <span class="venue">Organization Science, 2(1), 40–57.</span></li>
+      <li><span class="type t">Theoretical</span><span class="cite">Christin, A. (2020).</span> <a class="ptitle" href="https://doi.org/10.1007/s11186-020-09411-3" target="_blank" rel="noopener">The Ethnographer and the Algorithm: Beyond the Black Box.</a> <span class="venue">Theory and Society, 49, 897–918.</span></li>
+    </ol>
+  </div>
+</div></section>
+
+
+
+
+<footer><div class="wrap">
+  <p>Technology and Organizations: Foundations &amp; Frontiers · 2026–2027 · Convened by <a class="mail" href="mailto:daniel.politzer@stanford.edu">Daniel J. Politzer</a> and <a class="mail" href="mailto:amanda.pratt@stanford.edu">Amanda L. Pratt</a> &nbsp;·&nbsp; <a href="#schedule">Back to top</a></p>
+</div></footer>
+
+
+</body>
+</html>
