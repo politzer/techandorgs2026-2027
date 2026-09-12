@@ -32,7 +32,10 @@
   /* ---- nav ----
      The links used to disappear entirely below 1000px, which left every phone
      and tablet with a 4,900px page and no way to jump. Now the wordmark
-     shortens at that breakpoint and the links stay, in a scrollable strip. */
+     shortens at that breakpoint and the links stay, in a scrollable strip.
+     Breakpoint raised from 1000px to 1140px in September 2026 when the
+     Additional Resources link was added; the full wordmark plus seven links
+     overflowed between 1000px and about 1130px. */
   nav{position:sticky;top:0;z-index:20;background:rgba(251,250,247,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
   nav .wrap{display:flex;align-items:center;justify-content:space-between;min-height:56px;gap:16px;padding-top:8px;padding-bottom:8px}
   .brand{font-weight:700;letter-spacing:-.01em;white-space:nowrap;flex:0 0 auto}
@@ -41,7 +44,7 @@
   .navlinks{display:flex;gap:24px;font-size:14px}
   .navlinks a{color:var(--muted);white-space:nowrap}
   .navlinks a:hover{color:var(--ink);text-decoration:none}
-  @media(max-width:1000px){
+  @media(max-width:1140px){
     .brand .full{display:none}
     .brand .short{display:inline}
     .navlinks{
@@ -209,6 +212,7 @@
     <a href="#s2">Session 2</a>
     <a href="#s3">Session 3</a>
     <a href="#s4">Session 4</a>
+    <a href="https://docs.google.com/spreadsheets/d/1RZiuWQSNy6BAH63ebyoYptPpxXLZYnB7_Ph5IQ-s0yY/edit?usp=sharing" target="_blank" rel="noopener">Additional Resources</a>
   </div>
 </div></nav>
 
